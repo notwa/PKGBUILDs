@@ -1,0 +1,109 @@
+diff --git a/tbox-1.6.1/src/tbox/network/impl/ssl/openssl.c b/tbox-1.6.1-msys2/src/tbox/network/impl/ssl/openssl.c
+index f5ca14d..f1f5163 100644
+--- a/tbox-1.6.1/src/tbox/network/impl/ssl/openssl.c
++++ b/tbox-1.6.1-msys2/src/tbox/network/impl/ssl/openssl.c
+@@ -27,6 +27,7 @@
+ /* //////////////////////////////////////////////////////////////////////////////////////
+  * includes
+  */
++#include <winsock2.h>
+ #include "prefix.h"
+ #include "openssl/openssl.h"
+ #include "../../../utils/utils.h"
+@@ -80,7 +81,7 @@ static tb_int_t         tb_ssl_bio_method_init(BIO* bio);
+ static tb_int_t         tb_ssl_bio_method_exit(BIO* bio);
+ static tb_int_t         tb_ssl_bio_method_read(BIO* bio, tb_char_t* data, tb_int_t size);
+ static tb_int_t         tb_ssl_bio_method_writ(BIO* bio, tb_char_t const* data, tb_int_t size);
+-static tb_long_t        tb_ssl_bio_method_ctrl(BIO* bio, tb_int_t cmd, tb_long_t num, tb_pointer_t ptr);
++static long             tb_ssl_bio_method_ctrl(BIO* bio, tb_int_t cmd, long      num, tb_pointer_t ptr);
+ static tb_int_t         tb_ssl_bio_method_puts(BIO* bio, tb_char_t const* data);
+ static tb_int_t         tb_ssl_bio_method_gets(BIO* bio, tb_char_t* data, tb_int_t size);
+ 
+@@ -296,7 +297,7 @@ static tb_int_t tb_ssl_bio_method_writ(BIO* bio, tb_char_t const* data, tb_int_t
+     // ok?
+     return (tb_int_t)real;
+ }
+-static tb_long_t tb_ssl_bio_method_ctrl(BIO* bio, tb_int_t cmd, tb_long_t num, tb_pointer_t ptr)
++static long      tb_ssl_bio_method_ctrl(BIO* bio, tb_int_t cmd, long      num, tb_pointer_t ptr)
+ {
+     // check
+     tb_assert_and_check_return_val(bio, -1);
+diff --git a/tbox-1.6.1/src/tbox/platform/arch/x64/context.S b/tbox-1.6.1-msys2/src/tbox/platform/arch/x64/context.S
+index 1f3e7f0..258a05b 100644
+--- a/tbox-1.6.1/src/tbox/platform/arch/x64/context.S
++++ b/tbox-1.6.1-msys2/src/tbox/platform/arch/x64/context.S
+@@ -109,7 +109,7 @@ __end:
+ #ifdef TB_ARCH_ELF
+     call _exit@PLT
+ #else
+-    call __exit
++    call _exit
+ #endif
+     hlt
+ 
+diff --git a/tbox-1.6.1/src/tbox/platform/windows/ifaddrs.c b/tbox-1.6.1-msys2/src/tbox/platform/windows/ifaddrs.c
+index 69c25e0..b2f39b4 100644
+--- a/tbox-1.6.1/src/tbox/platform/windows/ifaddrs.c
++++ b/tbox-1.6.1-msys2/src/tbox/platform/windows/ifaddrs.c
+@@ -29,6 +29,10 @@
+ #include "../posix/sockaddr.h"
+ #include "interface/interface.h"
+ 
++#ifdef interface
++#undef interface
++#endif
++
+ /* //////////////////////////////////////////////////////////////////////////////////////
+  * private implementation
+  */
+diff --git a/tbox-1.6.1/src/tbox/prefix/type.h b/tbox-1.6.1-msys2/src/tbox/prefix/type.h
+index e4a108c..13f00f0 100644
+--- a/tbox-1.6.1/src/tbox/prefix/type.h
++++ b/tbox-1.6.1-msys2/src/tbox/prefix/type.h
+@@ -109,9 +109,9 @@ typedef tb_int32_t                  tb_wchar_t;
+ #if defined(TB_COMPILER_IS_MSVC)
+ typedef __int64                     tb_int64_t;
+ typedef unsigned __int64            tb_uint64_t;
+-#elif (TB_CPU_BITSIZE == 64)
+-typedef signed long                 tb_int64_t;
+-typedef unsigned long               tb_uint64_t;
++//#elif (TB_CPU_BITSIZE == 64)
++//typedef signed long                 tb_int64_t;
++//typedef unsigned long               tb_uint64_t;
+ #else
+ typedef signed long long            tb_int64_t;
+ typedef unsigned long long          tb_uint64_t;
+diff --git a/tbox-1.6.1/src/tbox/prefix/x86/prefix.S b/tbox-1.6.1-msys2/src/tbox/prefix/x86/prefix.S
+index 0866baa..60225cb 100644
+--- a/tbox-1.6.1/src/tbox/prefix/x86/prefix.S
++++ b/tbox-1.6.1-msys2/src/tbox/prefix/x86/prefix.S
+@@ -45,8 +45,8 @@ name:
+ #   define function(name) \
+     .text ;\
+     .align TB_CPU_BITBYTE ; \
+-    .global _##name ;\
+-_##name:
++    .global name ;\
++name:
+ #endif
+ 
+ // end function
+diff --git a/tbox-1.6.1/src/tbox/xmake.lua b/tbox-1.6.1-msys2/src/tbox/xmake.lua
+index e2bb8ee..745a77e 100644
+--- a/tbox-1.6.1/src/tbox/xmake.lua
++++ b/tbox-1.6.1-msys2/src/tbox/xmake.lua
+@@ -85,10 +85,10 @@ target("tbox")
+     -- add the source files for the coroutine module
+     if is_option("coroutine") then
+         add_files("platform/context.c") 
+-        if is_plat("windows") then
+-            add_files("platform/arch/$(arch)/context.asm") 
+-        else
+-            add_files("platform/arch/context.S") 
++        if is_arch("x86_64") then
++            add_files("platform/arch/x64/context.o")
++        elseif is_arch("i386") then
++            add_files("platform/arch/x86/context.o")
+         end
+         add_files("coroutine/**.c") 
+     end

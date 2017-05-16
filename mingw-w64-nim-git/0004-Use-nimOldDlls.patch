@@ -1,0 +1,52 @@
+diff --git a/lib/wrappers/openssl.nim b/lib/wrappers/openssl.nim
+index 5521476..2453c16 100644
+--- a/lib/wrappers/openssl.nim
++++ b/lib/wrappers/openssl.nim
+@@ -14,7 +14,7 @@
+ const useWinVersion = defined(Windows) or defined(nimdoc)
+ 
+ when useWinVersion:
+-  when not defined(nimOldDlls) and defined(cpu64):
++  when not true and defined(cpu64):
+     const
+       DLLSSLName = "(ssleay64|libssl64).dll"
+       DLLUtilName = "libeay64.dll"
+diff --git a/lib/wrappers/pcre.nim b/lib/wrappers/pcre.nim
+index 6c7088b..8b0e7f6 100644
+--- a/lib/wrappers/pcre.nim
++++ b/lib/wrappers/pcre.nim
+@@ -310,7 +310,7 @@ type
+ 
+ when not defined(usePcreHeader):
+   when hostOS == "windows":
+-    when defined(nimOldDlls):
++    when true:
+       const pcreDll = "pcre.dll"
+     elif defined(cpu64):
+       const pcreDll = "pcre64.dll"
+diff --git a/lib/wrappers/pdcurses.nim b/lib/wrappers/pdcurses.nim
+index 2d64ac9..a46134c 100644
+--- a/lib/wrappers/pdcurses.nim
++++ b/lib/wrappers/pdcurses.nim
+@@ -42,7 +42,7 @@ pdcwin.h:
+ when defined(windows):
+   import windows
+ 
+-  when defined(nimOldDlls):
++  when true:
+     const pdcursesdll = "pdcurses.dll"
+   elif defined(cpu64):
+     const pdcursesdll = "pdcurses64.dll"
+diff --git a/lib/wrappers/sqlite3.nim b/lib/wrappers/sqlite3.nim
+index a129458..5e84a9b 100644
+--- a/lib/wrappers/sqlite3.nim
++++ b/lib/wrappers/sqlite3.nim
+@@ -9,7 +9,7 @@
+ 
+ {.deadCodeElim: on.}
+ when defined(windows):
+-  when defined(nimOldDlls):
++  when true:
+     const Lib = "sqlite3.dll"
+   elif defined(cpu64):
+     const Lib = "sqlite3_64.dll"

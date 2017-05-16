@@ -1,0 +1,51 @@
+_pkgname=tbox
+pkgbase="mingw-w64-${_pkgname}"
+pkgname="${MINGW_PACKAGE_PREFIX}-${_pkgname}"
+pkgver=1.6.1
+pkgrel=1
+pkgdesc="A glib-like multi-platform C library"
+arch=('i686' 'x86_64')
+url="https://github.com/tboox/tbox"
+license=('Apache')
+depends=("${MINGW_PACKAGE_PREFIX}-gcc-libs"
+         "${MINGW_PACKAGE_PREFIX}-openssl"
+         "${MINGW_PACKAGE_PREFIX}-pcre"
+         "${MINGW_PACKAGE_PREFIX}-sqlite3"
+         "${MINGW_PACKAGE_PREFIX}-winpthreads-git"
+         "${MINGW_PACKAGE_PREFIX}-zlib")
+# NOTE: xmake isn't available for msys2 yet,
+#       so instead, I recommend that you download it from
+#       https://github.com/tboox/xmake/releases
+#       and put it to your PATH.
+#makedepends=('xmake')
+source=("${pkgname}.zip::https://github.com/tboox/tbox/archive/v${pkgver}.zip"
+        "msys2.patch"
+        "context_x86.obj"  # sorry for including assembled object files,
+        "context_x64.obj") # but this avoids depending on MASM for now.
+sha256sums=('d389027f63c11d3170b09fb51a9b75b55c34a7f0fb82de49d7c5be17c8cb3239'
+            'ca4a70de41338fea3422cb7957c2249cfb7e7464e5f9b12120751574965a128d'
+            'd5a3dddee337f0aad5912cfc4271f2ea46b0093ee2cd1fcc037a3ad2788a4744'
+            '44eb2adb0f5abb86c4fdb70868be3d91d94a4f73841a625de47dae99a532dc33')
+
+prepare() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  patch -p2 -i "${srcdir}/msys2.patch"
+
+  cp "${srcdir}/context_x86.obj" src/tbox/platform/arch/x86/context.o
+  cp "${srcdir}/context_x64.obj" src/tbox/platform/arch/x64/context.o
+}
+
+build() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  [ "${MSYSTEM}" == "MINGW64" ] && arch=x86_64 || arch=i386
+  xmake config -c -p mingw -a "${arch}"
+  xmake build
+}
+
+package() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  mkdir -p "${pkgdir}${MINGW_PREFIX}/lib"
+  mkdir -p "${pkgdir}${MINGW_PREFIX}/share/tbox"
+  cp "build/libtbox.a" "${pkgdir}${MINGW_PREFIX}/lib/"
+  cp "build/demo.exe" "${pkgdir}${MINGW_PREFIX}/share/tbox/"
+}

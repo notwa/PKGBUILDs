@@ -1,0 +1,169 @@
+#!/usr/bin/env bash
+set -e
+
+# known not to work
+failing=(
+#   coroutine_echo_client
+#   coroutine_echo_server
+#   coroutine_file_client
+#   coroutine_file_server
+#   coroutine_http_server
+    coroutine_lock
+    memory_check
+    platform_lock
+    platform_thread_pool
+    platform_timer
+    stream_cache
+    stream_charset
+    stream_null
+    stream_zip
+)
+
+# probably expecting input or arguments
+stalling=(
+#   lo_coroutine_echo_client
+#   lo_coroutine_echo_server
+#   lo_coroutine_file_client
+#   lo_coroutine_file_server
+#   lo_coroutine_http_server
+    network_whois
+    platform_event
+    platform_ltimer
+    platform_semaphore
+    platform_thread
+    platform_thread_local
+)
+
+# and finally, the stuff that works
+# TODO: pass arguments to those that expect them (e.g. stream)
+running=(
+    algorithm_find
+    algorithm_sort
+    container_bloom_filter
+    container_circle_queue
+    container_hash_map
+    container_hash_set
+    container_heap
+    container_list
+    container_list_entry
+    container_queue
+    container_single_list
+    container_single_list_entry
+    container_stack
+    container_vector
+    coroutine_channel
+    coroutine_nest
+    coroutine_semaphore
+    coroutine_sleep
+    coroutine_spider
+    coroutine_switch
+    database_sql
+    hash_adler32
+    hash_benchmark
+    hash_crc16
+    hash_crc32
+    hash_crc8
+    hash_djb2
+    hash_fnv32
+    hash_fnv64
+    hash_md5
+    hash_sdbm
+    hash_sha
+    hash_uuid
+    libc_mbstowcs
+    libc_stdlib
+    libc_string
+    libc_time
+    libc_wchar
+    libc_wcstombs
+    libm_double
+    libm_float
+    libm_integer
+    lo_coroutine_lock
+    lo_coroutine_nest
+    lo_coroutine_sleep
+    lo_coroutine_switch
+    math_fixed
+    math_random
+    memory_buffer
+    memory_default_allocator
+    memory_fixed_pool
+    memory_impl_static_fixed_pool
+    memory_large_allocator
+    memory_memops
+    memory_queue_buffer
+    memory_small_allocator
+    memory_static_buffer
+    memory_string_pool
+    network_cookies
+    network_dns
+    network_http
+    network_hwaddr
+    network_impl_date
+    network_ipaddr
+    network_ipv4
+    network_ipv6
+    network_url
+    object_bin
+    object_bplist
+    object_dump
+    object_jcat
+    object_json
+    object_xml
+    object_xplist
+    other_charset
+    other_test
+    platform_addrinfo
+    platform_atomic
+    platform_atomic64
+    platform_backtrace
+    platform_barrier
+    platform_cache_time
+    platform_context
+    platform_directory
+    platform_environment
+    platform_file
+    platform_hostname
+    platform_ifaddrs
+    platform_path
+    platform_process
+    platform_processor
+    platform_utils
+    regex
+    stream
+    string_static_string
+    string_string
+    utils_base32
+    utils_base64
+    utils_bits
+    utils_dump
+    utils_option
+    utils_url
+    xml_document
+    xml_reader
+    xml_writer
+)
+
+testall() {
+    local demo="$1"
+    shift || { echo "expected path to demo program" >&2; return -1; }
+    local ret=0
+
+    for d in "${running[@]}"; do
+        echo "testing: $d" >&2
+        fail=0
+        "$demo" "$d" > /tmp/demo_stdout || fail=1
+        if [ $fail -eq 1 ]; then
+            cat /tmp/demo_stdout
+            echo "TEST FAILED: $d" >&2
+            let ret++
+            #break
+        fi
+    done
+
+    rm /tmp/demo_stdout
+
+    return $ret
+}
+
+testall "$@"
