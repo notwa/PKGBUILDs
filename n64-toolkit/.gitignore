@@ -1,0 +1,6 @@
+*.bz2
+*.gz
+*.xz
+n64
+pkg
+src

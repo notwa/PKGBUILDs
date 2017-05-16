@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+
+maybe_sudo() {
+    if which sudo >/dev/null; then
+        sudo "$@"
+    else
+        if [ "$1" = "-u" ]; then
+            shift; shift
+        fi
+        "$@"
+    fi
+}
+
+set -e
+maybe_sudo -u "$USER" makepkg -fp PKGBUILD.binutils
+maybe_sudo pacman -U *.xz(om[1])
+maybe_sudo -u "$USER" makepkg -fp PKGBUILD.bootstrap
+maybe_sudo pacman -U *.xz(om[1])
+maybe_sudo -u "$USER" makepkg -fp PKGBUILD.newlib
+maybe_sudo pacman -U *.xz(om[1])
+maybe_sudo -u "$USER" makepkg -efp PKGBUILD.gcc
+maybe_sudo pacman -U *.xz(om[1])

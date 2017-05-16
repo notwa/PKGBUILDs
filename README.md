@@ -13,6 +13,14 @@ a few things aren't working yet, but the core functionality is there.
 patches tbox to compile/run with MSYS2.
 *a lot of stuff* isn't working yet.
 
+### n64-toolkit
+
+compiles a cross-compiler for N64 homebrew.
+works on both Arch and MSYS2.
+
+i need to rename this package at some point.
+currently, it doesn't follow any guidelines.
+
 ### xml2
 
 modified to download from a mirror.

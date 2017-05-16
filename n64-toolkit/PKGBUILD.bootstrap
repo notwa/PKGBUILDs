@@ -1,0 +1,119 @@
+_target=mips64
+_prefix="/opt/n64-toolchain-slim"
+_mpfr=mpfr-3.1.4
+_gmp=gmp-6.1.0
+_mpc=mpc-1.0.3
+_isl=isl-0.16.1
+pkgname=n64-toolkit-bootstrap
+pkgver=6.2.0
+pkgrel=1
+_gcc="gcc-$pkgver"
+pkgdesc="The GNU Compiler Collection. Stage 1 for toolchain building (${_target})"
+arch=('any')
+license=('GPL' 'LGPL' 'FDL')
+url='http://www.gnu.org/software/gcc/'
+depends=('zlib' 'n64-toolkit-binutils') # 'libmpc'
+makedepends=('gmp' 'mpfr')
+provides=('n64-toolkit-gcc')
+source=("ftp://gcc.gnu.org/pub/gcc/releases/$_gcc/$_gcc.tar.bz2"
+        "ftp://gcc.gnu.org/pub/gcc/infrastructure/$_mpfr.tar.bz2"
+        "ftp://gcc.gnu.org/pub/gcc/infrastructure/$_gmp.tar.bz2"
+        "ftp://gcc.gnu.org/pub/gcc/infrastructure/$_mpc.tar.gz"
+        "ftp://gcc.gnu.org/pub/gcc/infrastructure/$_isl.tar.bz2")
+md5sums=('9768625159663b300ae4de2f4745fcc4'
+         'b8a2f6b0e68bef46e53da2ac439e1cf4'
+         '86ee6e54ebfc4a90b643a65e402c4048'
+         'd6a1d5f8ddea3abd2cc3e98f58352d26'
+         'ac1f25a0677912952718a51f5bc20f32')
+options=('!emptydirs' '!strip')
+
+prepare() {
+  cd "$srcdir/$_isl"
+  # Fix trailing comma which errors with -pedantic for host GCC <= 4.3
+  sed -i 's/isl_stat_ok = 0,/isl_stat_ok = 0/' "include/isl/ctx.h"
+
+  cd "$srcdir/$_gcc"
+  rm -rf mpfr gmp mpc isl
+  ln -sf "$srcdir/$_mpfr" mpfr
+  ln -sf "$srcdir/$_gmp" gmp
+  ln -sf "$srcdir/$_mpc" mpc
+  ln -sf "$srcdir/$_isl" isl
+  # Hack - see native package for details
+  sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
+}
+
+build() {
+  # the programs we're compiling are really picky about flags.
+  # it's best to keep it simple.
+  export CFLAGS="-O2"
+  export CXXFLAGS="-O2"
+  export CPPFLAGS=""
+  export LDFLAGS=""
+
+  export CFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections \
+-fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables"
+  export CXXFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET -fno-rtti"
+
+  cd "$srcdir"
+  [ -d "build-bootstrap-gcc" ] || mkdir "build-bootstrap-gcc"
+  cd "build-bootstrap-gcc"
+
+  local _build=
+  if [ -n "$MINGW_CHOST" ]; then
+    _build="--build=$MINGW_CHOST --host=$MINGW_CHOST"
+  fi
+
+  "../$_gcc/configure" $_build --target=${_target} --prefix="$_prefix" \
+    --disable-__cxa_atexit \
+    --disable-decimal-float \
+    --disable-gold \
+    --disable-initfini-array \
+    --disable-libada \
+    --disable-libatomic \
+    --disable-libgcj \
+    --disable-libgomp \
+    --disable-libitm \
+    --disable-libquadmath \
+    --disable-libquadmath-support \
+    --disable-libsanitizer \
+    --disable-libssp \
+    --disable-libunwind-exceptions \
+    --disable-libvtv \
+    --disable-multiarch \
+    --disable-multilib \
+    --disable-nls \
+    --disable-plugin \
+    --disable-shared \
+    --disable-threads \
+    --disable-tls \
+    --disable-werror \
+    --enable-languages=c,c++,lto \
+    --enable-static \
+    --enable-target-optspace \
+    --with-abi=32 \
+    --with-arch=vr4300 \
+    --with-newlib \
+    --with-tune=vr4300 \
+    --without-included-gettext \
+    --without-headers \
+
+  make all-gcc
+}
+
+package() {
+  local PREFIX="$pkgdir$_prefix"
+
+  cd "$srcdir/build-bootstrap-gcc"
+  make DESTDIR="$pkgdir" install-gcc -j1
+
+  # strip target binaries
+  find "$PREFIX/lib" \( -name "*.a" -or -name "*.o" \) -exec $_target-objcopy \
+    -R .comment -R .note -R .debug_info -R .debug_aranges -R .debug_pubnames -R .debug_pubtypes -R .debug_abbrev -R .debug_line -R .debug_str -R .debug_ranges -R .debug_loc \
+    '{}' \;
+
+  # strip host binaries
+  find "$PREFIX/bin" "$PREFIX/lib/gcc/$_target/${_gcc/gcc-/}" \
+    -type f -and \( -executable \) -exec strip '{}' \;
+
+  rm -r "$PREFIX/share/info"
+}

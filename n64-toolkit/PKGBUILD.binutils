@@ -1,0 +1,62 @@
+_target=mips64
+_prefix="/opt/n64-toolchain-slim"
+pkgname=n64-toolkit-binutils
+pkgver=2.27
+pkgrel=1
+_binutils="binutils-$pkgver"
+pkgdesc="A set of programs to assemble and manipulate binary and object files (${_target})"
+arch=('any')
+license=('GPL')
+url="http://www.gnu.org/software/binutils/"
+depends=('zlib')
+source=("ftp://gcc.gnu.org/pub/binutils/releases/$_binutils.tar.bz2")
+md5sums=('2869c9bf3e60ee97c74ac2a6bf4e9d68')
+options=('!emptydirs' '!strip')
+
+prepare() {
+  cd "$srcdir/$_binutils"
+  # Hack - see native package for details
+  sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" libiberty/configure
+}
+
+build() {
+  # the programs we're compiling are really picky about flags.
+  # it's best to keep it simple.
+  export CFLAGS="-O2"
+  export CXXFLAGS="-O2"
+  export CPPFLAGS=""
+  export LDFLAGS=""
+
+  export CFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections \
+-fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables"
+  export CXXFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET -fno-rtti"
+
+  cd "$srcdir"
+  [ -d "build-binutils" ] || mkdir "build-binutils"
+  cd "build-binutils"
+
+  local _build=
+  if [ -n "$MINGW_CHOST" ]; then
+    _build="--build=$MINGW_CHOST --host=$MINGW_CHOST"
+  fi
+
+  "../$_binutils/configure" $_build --target=${_target} --prefix="$_prefix" \
+    --enable-static \
+    --disable-gold \
+    --disable-multilib \
+    --disable-nls \
+    --disable-shared \
+    --disable-werror \
+
+  make all
+}
+
+package() {
+  local PREFIX="$pkgdir$_prefix"
+
+  cd "$srcdir/build-binutils"
+  make DESTDIR="$pkgdir" install -j1
+
+  # strip host binaries
+  find "$PREFIX/bin" -type f -and \( -executable \) -exec strip '{}' \;
+}
