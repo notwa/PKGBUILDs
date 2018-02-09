@@ -24,19 +24,6 @@ index 6c7088b..8b0e7f6 100644
        const pcreDll = "pcre.dll"
      elif defined(cpu64):
        const pcreDll = "pcre64.dll"
-diff --git a/lib/wrappers/pdcurses.nim b/lib/wrappers/pdcurses.nim
-index 2d64ac9..a46134c 100644
---- a/lib/wrappers/pdcurses.nim
-+++ b/lib/wrappers/pdcurses.nim
-@@ -42,7 +42,7 @@ pdcwin.h:
- when defined(windows):
-   import windows
- 
--  when defined(nimOldDlls):
-+  when true:
-     const pdcursesdll = "pdcurses.dll"
-   elif defined(cpu64):
-     const pdcursesdll = "pdcurses64.dll"
 diff --git a/lib/wrappers/sqlite3.nim b/lib/wrappers/sqlite3.nim
 index a129458..5e84a9b 100644
 --- a/lib/wrappers/sqlite3.nim

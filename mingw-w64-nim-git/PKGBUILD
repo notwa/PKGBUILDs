@@ -1,6 +1,6 @@
 pkgbase=mingw-w64-nim-git
 pkgname=("${MINGW_PACKAGE_PREFIX}-nim-git")
-pkgver=20170404
+pkgver=20180209
 pkgrel=1
 arch=('i686' 'x86_64')
 groups=('nim')
@@ -18,7 +18,7 @@ sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP'
             '3010acbe7769ea214dd51f5889e3a26b44925001905deb04b060beaede2578f4'
             'fac04c8caa29a545275cd19a0fac597649c8ad9e7556fe65802e28c88c8905ac'
             '3cfe161bd1e19f621e2ff824a59362e4f3d4d2a4d27a2653bae1d83ba23ab9b1'
-            'bbfa440d05cc2788caabd94623e35275519f0692f6ddfa00a7afcdddbb274888')
+            '5e97d3ad36f8c4fd29ba69f4a8c613d9a57006da35109c616f4a288f5955a276')
 
 pkgver() {
   cd "$srcdir/Nim"
