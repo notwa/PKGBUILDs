@@ -26,13 +26,20 @@ currently, it doesn't follow any guidelines.
 modified to download from a mirror.
 the original URL is offline.
 
-## mxe-src
+## mxe-plugins
 
 there's some mxe stuff in this repo too.
-just dump the files in mxe-src into mxe's src directory.
+just add the directory to your plugins variable, like this:
+```
+make ffmpeg MXE_PLUGIN_DIRS=/path/to/PKGBUILDs/mxe-plugins/notwa
+```
 
 ### ffmpeg
 
 this package has been tweaked to build a more recent version
 and to enable(-nonfree) some stuff they tell you not to.
 there's licensing conflicts, so don't redistribute the resulting binaries.
+
+### mxe
+
+just leaving this here as a TODO…
