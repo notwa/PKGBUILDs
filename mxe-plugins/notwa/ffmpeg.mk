@@ -8,26 +8,17 @@ $(PKG)_CHECKSUM := e0c5d95c2f9866bd15ae8beb258e95ec8dc5b491c9640528aa561c651e04a
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://git.ffmpeg.org/gitweb/ffmpeg.git/snapshot/$($(PKG)_FILE)
-$(PKG)_DEPS     := cc bzip2 fdk-aac gnutls lame libass libbluray libbs2b \
-                   libcaca librtmp libvpx libwebp opencore-amr opus \
-                   sdl speex theora vidstab vo-amrwbenc \
-                   vorbis x264 xvidcore yasm zlib \
-                   freetype fontconfig fribidi \
-                   vidstab
+$(PKG)_DEPS     := bzip2 cc fdk-aac fontconfig freetype \
+                   fribidi gnutls ladspa lame \
+                   libass libbluray libbs2b libcaca librtmp libvpx libwebp \
+                   opencore-amr opus sdl speex theora vidstab \
+                   vo-amrwbenc vorbis x264 xvidcore yasm zlib
 
-
-# NOTE: you'll have to manually copy ladspa.h into mxe's usr directory
-#cp /usr/include/ladspa.h usr/x86_64-w64-mingw32.static/include/ladspa.h
-# --enable-libebur128 \
-# --enable-libflite \
-# --enable-libzmq \
-# --enable-opencl \
-# NOTE: opencv should work if you pass the right C++ standard
-# --enable-libopencv \
-# also has an issue linking using gcc 6
-# --enable-netcdf \
-# doesn't exist anymore?
-# --disable-ffserver \
+define $(PKG)_UPDATE
+    $(WGET) -q -O- 'https://git.ffmpeg.org/gitweb/ffmpeg.git/shortlog' | \
+    $(SED) -n 's,.*/commit/\([a-f0-9]\{7\}\).*,\1,p' | \
+    head -1
+endef
 
 define $(PKG)_BUILD
     cd '$(1)' && ./configure \

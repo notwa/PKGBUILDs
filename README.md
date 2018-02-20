@@ -40,6 +40,10 @@ this package has been tweaked to build a more recent version
 and to enable(-nonfree) some stuff they tell you not to.
 there's licensing conflicts, so don't redistribute the resulting binaries.
 
+### ladspa
+
+this is a simple package that just downloads and installs `ladspa.h`.
+
 ### mxe
 
 just leaving this here as a TODO…
