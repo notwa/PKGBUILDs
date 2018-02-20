@@ -40,10 +40,21 @@ this package has been tweaked to build a more recent version
 and to enable(-nonfree) some stuff they tell you not to.
 there's licensing conflicts, so don't redistribute the resulting binaries.
 
+### mpv
+
+builds mpv with most of the features available to mxe.
+it's not as full-featured [as other builds,][mpvother]
+but it gets the job done.
+
+[mpvother]: https://github.com/lachs0r/mingw-w64-cmake
+
 ### ladspa
 
-this is a simple package that just downloads and installs `ladspa.h`.
+this just downloads and installs `ladspa.h`.
 
-### mxe
+### waf
 
-just leaving this here as a TODO…
+this just downloads and installs `waf`.
+it's the same as the package provided with mxe,
+except the version has been updated
+to the one mpv recommends to build with.
