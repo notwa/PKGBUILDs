@@ -25,3 +25,14 @@ currently, it doesn't follow any guidelines.
 
 modified to download from a mirror.
 the original URL is offline.
+
+## mxe-src
+
+there's some mxe stuff in this repo too.
+just dump the files in mxe-src into mxe's src directory.
+
+### ffmpeg
+
+this package has been tweaked to build a more recent version
+and to enable(-nonfree) some stuff they tell you not to.
+there's licensing conflicts, so don't redistribute the resulting binaries.
