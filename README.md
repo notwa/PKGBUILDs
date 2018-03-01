@@ -43,7 +43,7 @@ there's licensing conflicts, so don't redistribute the resulting binaries.
 ### mpv
 
 builds mpv with most of the features available to mxe.
-it's not as full-featured [as other builds,][mpvother]
+it's not as fully-featured [as other builds,][mpvother]
 but it gets the job done.
 
 [mpvother]: https://github.com/lachs0r/mingw-w64-cmake
