@@ -1,11 +1,11 @@
 _target=mips64
 _prefix="/opt/n64-toolchain-slim"
-_mpfr=mpfr-3.1.4
-_gmp=gmp-6.1.0
-_mpc=mpc-1.0.3
-_isl=isl-0.16.1
+_mpfr=mpfr-4.0.1
+_gmp=gmp-6.1.2
+_mpc=mpc-1.1.0
+_isl=isl-0.18
 pkgname=n64-toolkit-bootstrap
-pkgver=6.2.0
+pkgver=7.3.0
 pkgrel=1
 _gcc="gcc-$pkgver"
 pkgdesc="The GNU Compiler Collection. Stage 1 for toolchain building (${_target})"
@@ -15,16 +15,16 @@ url='http://www.gnu.org/software/gcc/'
 depends=('zlib' 'n64-toolkit-binutils') # 'libmpc'
 makedepends=('gmp' 'mpfr')
 provides=('n64-toolkit-gcc')
-source=("ftp://gcc.gnu.org/pub/gcc/releases/$_gcc/$_gcc.tar.bz2"
-        "ftp://gcc.gnu.org/pub/gcc/infrastructure/$_mpfr.tar.bz2"
-        "ftp://gcc.gnu.org/pub/gcc/infrastructure/$_gmp.tar.bz2"
-        "ftp://gcc.gnu.org/pub/gcc/infrastructure/$_mpc.tar.gz"
+source=("ftp://gcc.gnu.org/pub/gcc/releases/$_gcc/$_gcc.tar.gz"
+        "ftp://ftp.gnu.org/gnu/mpfr/$_mpfr.tar.bz2"
+        "ftp://ftp.gnu.org/gnu/gmp/$_gmp.tar.bz2"
+        "ftp://ftp.gnu.org/gnu/mpc/$_mpc.tar.gz"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/$_isl.tar.bz2")
-md5sums=('9768625159663b300ae4de2f4745fcc4'
-         'b8a2f6b0e68bef46e53da2ac439e1cf4'
-         '86ee6e54ebfc4a90b643a65e402c4048'
-         'd6a1d5f8ddea3abd2cc3e98f58352d26'
-         'ac1f25a0677912952718a51f5bc20f32')
+md5sums=('747d5010b7c6938b480bc6e4d7c4be9a'
+         '8c21d8ac7460493b2b9f3ef3cc610454'
+         '8ddbb26dc3bd4e2302984debba1406a5'
+         '4125404e41e482ec68282a2e687f6c73'
+         '11436d6b205e516635b666090b94ab32')
 options=('!emptydirs' '!strip')
 
 prepare() {

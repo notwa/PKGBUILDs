@@ -1,7 +1,7 @@
 _target=mips64
 _prefix="/opt/n64-toolchain-slim"
 pkgname=n64-toolkit-binutils
-pkgver=2.27
+pkgver=2.30
 pkgrel=1
 _binutils="binutils-$pkgver"
 pkgdesc="A set of programs to assemble and manipulate binary and object files (${_target})"
@@ -10,7 +10,7 @@ license=('GPL')
 url="http://www.gnu.org/software/binutils/"
 depends=('zlib')
 source=("ftp://gcc.gnu.org/pub/binutils/releases/$_binutils.tar.bz2")
-md5sums=('2869c9bf3e60ee97c74ac2a6bf4e9d68')
+md5sums=('cc47a2f256b4a593206b4d7e62a60b32')
 options=('!emptydirs' '!strip')
 
 prepare() {

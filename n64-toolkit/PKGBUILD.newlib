@@ -1,7 +1,7 @@
 _target=mips64
 _prefix="/opt/n64-toolchain-slim"
 pkgname=n64-toolkit-newlib
-pkgver=2.4.0.20161025
+pkgver=2.5.0.20171222
 pkgrel=1
 _newlib="newlib-$pkgver"
 pkgdesc="A C library intended for use on embedded systems (${_target})"
@@ -10,7 +10,7 @@ license=('BSD')
 url='http://sourceware.org/newlib/'
 makedepends=('n64-toolkit-bootstrap')
 source=("ftp://sourceware.org/pub/newlib/$_newlib.tar.gz")
-md5sums=('6b1bf8483f71d776bbc54533054caa3e')
+md5sums=('98215f83a542fdde946c11661a34ab3f')
 options=('!emptydirs' '!strip')
 
 build() {
