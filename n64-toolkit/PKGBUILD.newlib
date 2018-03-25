@@ -1,14 +1,15 @@
 _target=mips64
-_prefix="/opt/n64-toolchain-slim"
-pkgname=n64-toolkit-newlib
+_tuple=$_target-elf-ultra64
+_prefix=/opt/$_tuple
+pkgname=$_tuple-newlib
 pkgver=2.5.0.20171222
 pkgrel=1
 _newlib="newlib-$pkgver"
-pkgdesc="A C library intended for use on embedded systems (${_target})"
+pkgdesc="A C library intended for use on embedded systems ($_target)"
 arch=('any')
 license=('BSD')
 url='http://sourceware.org/newlib/'
-makedepends=('n64-toolkit-bootstrap')
+makedepends=("$_tuple-bootstrap")
 source=("ftp://sourceware.org/pub/newlib/$_newlib.tar.gz")
 md5sums=('98215f83a542fdde946c11661a34ab3f')
 options=('!emptydirs' '!strip')
@@ -23,7 +24,7 @@ build() {
   export CPPFLAGS=""
   export LDFLAGS=""
 
-  export CFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections \
+  export CFLAGS_FOR_TARGET="-O2 -G0 -ffunction-sections -fdata-sections \
 -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables"
   export CXXFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET -fno-rtti"
 
@@ -36,7 +37,7 @@ build() {
     _build="--build=$MINGW_CHOST --host=$MINGW_CHOST"
   fi
 
-  "../$_newlib/configure" $_build --target=${_target} --prefix="$_prefix" \
+  "../$_newlib/configure" $_build --target=$_target --prefix="$_prefix" \
     --with-newlib \
     --enable-lto \
     --enable-target-optspace \

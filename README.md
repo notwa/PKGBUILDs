@@ -15,11 +15,10 @@ patches tbox to compile/run with MSYS2.
 
 ### n64-toolkit
 
-compiles a cross-compiler for N64 homebrew.
+builds a cross-compiler for N64 homebrew.
 works on both Arch and MSYS2.
 
-i need to rename this package at some point.
-currently, it doesn't follow any guidelines.
+installs to `/opt/mips64-elf-ultra64`, so add that to your PATH as needed.
 
 ### xml2
 

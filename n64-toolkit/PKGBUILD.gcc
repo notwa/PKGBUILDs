@@ -1,22 +1,23 @@
 _target=mips64
-_prefix="/opt/n64-toolchain-slim"
+_tuple=$_target-elf-ultra64
+_prefix=/opt/$_tuple
+pkgname=$_tuple-gcc
+pkgver=7.3.0
+pkgrel=1
+_gcc=gcc-$pkgver
 _mpfr=mpfr-4.0.1
 _gmp=gmp-6.1.2
 _mpc=mpc-1.1.0
 _isl=isl-0.18
-pkgname=n64-toolkit-gcc
-pkgver=7.3.0
-pkgrel=1
-_gcc="gcc-$pkgver"
-pkgdesc="The GNU Compiler Collection (${_target})"
+pkgdesc="The GNU Compiler Collection ($_target)"
 arch=('any')
 license=('GPL' 'LGPL' 'FDL')
 url='http://www.gnu.org/software/gcc/'
-depends=('zlib' "n64-toolkit-binutils" "n64-toolkit-newlib") # 'libmpc'
+depends=('zlib' "$_tuple-binutils" "$_tuple-newlib")
 makedepends=('gmp' 'mpfr')
-conflicts=('n64-toolkit-bootstrap')
-provides=('n64-toolkit-bootstrap')
-replaces=('n64-toolkit-bootstrap')
+conflicts=("$_tuple-bootstrap")
+provides=("$_tuple-bootstrap")
+replaces=("$_tuple-bootstrap")
 source=("ftp://gcc.gnu.org/pub/gcc/releases/$_gcc/$_gcc.tar.gz"
         "ftp://ftp.gnu.org/gnu/mpfr/$_mpfr.tar.bz2"
         "ftp://ftp.gnu.org/gnu/gmp/$_gmp.tar.bz2"
@@ -52,7 +53,7 @@ build() {
   export CPPFLAGS=""
   export LDFLAGS=""
 
-  export CFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections \
+  export CFLAGS_FOR_TARGET="-O2 -G0 -ffunction-sections -fdata-sections \
 -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables"
   export CXXFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET -fno-rtti"
 
@@ -65,7 +66,7 @@ build() {
     _build="--build=$MINGW_CHOST --host=$MINGW_CHOST"
   fi
 
-  "../$_gcc/configure" $_build --target=${_target} --prefix="$_prefix" \
+  "../$_gcc/configure" $_build --target=$_target --prefix="$_prefix" \
     --disable-__cxa_atexit \
     --disable-decimal-float \
     --disable-gold \
@@ -96,6 +97,7 @@ build() {
     --with-arch=vr4300 \
     --with-newlib \
     --with-tune=vr4300 \
+    --without-headers \
     --without-included-gettext \
 
   make all
