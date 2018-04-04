@@ -3,8 +3,8 @@
 PKG             := ffmpeg
 $(PKG)_WEBSITE  := https://ffmpeg.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := b173e03
-$(PKG)_CHECKSUM := b5ed05dc2da7b0f28f27cd1c5ae8c3cadf96454fb234ef0d3233dbf96f499a03
+$(PKG)_VERSION  := be502ec
+$(PKG)_CHECKSUM := 591a7224b1241c0de97b5e84300b19ba35496acaccc4cf86555057fed00629c5
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://git.ffmpeg.org/gitweb/ffmpeg.git/snapshot/$($(PKG)_FILE)
