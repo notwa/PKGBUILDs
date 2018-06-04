@@ -3,8 +3,8 @@
 PKG             := mpv
 $(PKG)_WEBSITE  := https://mpv.io/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := e3e2c79
-$(PKG)_CHECKSUM := ec154bb8225a0d91b6e85711a67ce85dbadaa5577be609a6a282624a65b9830d
+$(PKG)_VERSION  := 8479449
+$(PKG)_CHECKSUM := 123df258a356353da2a7d49214c95157be1fa4c67fbe3c284c72bbd35cf0d4bc
 $(PKG)_GH_CONF  := mpv-player/mpv/master
 $(PKG)_DEPS     := cc ffmpeg fribidi lcms \
                    libarchive libass libdvdnav libdvdread libiconv \
@@ -20,7 +20,6 @@ define $(PKG)_BUILD
         --disable-manpage-build \
         --enable-dvdnav \
         --enable-dvdread \
-        --enable-encoding \
         --enable-lcms2 \
         --enable-libarchive \
         --enable-libass \
