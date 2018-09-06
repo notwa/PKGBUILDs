@@ -3,8 +3,8 @@
 PKG             := mpv
 $(PKG)_WEBSITE  := https://mpv.io/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := cd89362
-$(PKG)_CHECKSUM := bc0a028613027c545e7a79c6bb3192d84d602040cf416dd24f372c66503452a0
+$(PKG)_VERSION  := 91786fa
+$(PKG)_CHECKSUM := b934a7f842cb0bc9518cfb46f2dfd69d6e924022ba7ba73c63d36e48266fae89
 $(PKG)_GH_CONF  := mpv-player/mpv/master
 $(PKG)_DEPS     := cc ffmpeg fribidi lcms \
                    libarchive libass libdvdnav libdvdread libiconv \
