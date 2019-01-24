@@ -2,7 +2,7 @@ _target=mips64
 _tuple=$_target-elf-ultra64
 _prefix=/opt/$_tuple
 pkgname=$_tuple-binutils
-pkgver=2.30
+pkgver=2.31.1
 pkgrel=1
 _binutils="binutils-$pkgver"
 pkgdesc="A set of programs to assemble and manipulate binary and object files ($_target)"
@@ -11,7 +11,7 @@ license=('GPL')
 url='http://www.gnu.org/software/binutils/'
 depends=('zlib')
 source=("ftp://gcc.gnu.org/pub/binutils/releases/$_binutils.tar.bz2")
-md5sums=('cc47a2f256b4a593206b4d7e62a60b32')
+md5sums=('84edf97113788f106d6ee027f10b046a')
 options=('!emptydirs' '!strip')
 
 prepare() {

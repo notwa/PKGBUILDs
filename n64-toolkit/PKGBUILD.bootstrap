@@ -2,7 +2,7 @@ _target=mips64
 _tuple=$_target-elf-ultra64
 _prefix=/opt/$_tuple
 pkgname=$_tuple-bootstrap
-pkgver=7.3.0
+pkgver=8.2.0
 pkgrel=1
 _gcc=gcc-$pkgver
 _mpfr=mpfr-4.0.1
@@ -20,7 +20,7 @@ source=("ftp://gcc.gnu.org/pub/gcc/releases/$_gcc/$_gcc.tar.gz"
         "ftp://ftp.gnu.org/gnu/gmp/$_gmp.tar.bz2"
         "ftp://ftp.gnu.org/gnu/mpc/$_mpc.tar.gz"
         "ftp://gcc.gnu.org/pub/gcc/infrastructure/$_isl.tar.bz2")
-md5sums=('747d5010b7c6938b480bc6e4d7c4be9a'
+md5sums=('ee04f0c22a941f5f17d93809387f2729'
          '8c21d8ac7460493b2b9f3ef3cc610454'
          '8ddbb26dc3bd4e2302984debba1406a5'
          '4125404e41e482ec68282a2e687f6c73'

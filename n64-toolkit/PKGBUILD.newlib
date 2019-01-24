@@ -2,7 +2,7 @@ _target=mips64
 _tuple=$_target-elf-ultra64
 _prefix=/opt/$_tuple
 pkgname=$_tuple-newlib
-pkgver=2.5.0.20171222
+pkgver=3.1.0.20181231
 pkgrel=1
 _newlib="newlib-$pkgver"
 pkgdesc="A C library intended for use on embedded systems ($_target)"
@@ -11,7 +11,7 @@ license=('BSD')
 url='http://sourceware.org/newlib/'
 makedepends=("$_tuple-bootstrap")
 source=("ftp://sourceware.org/pub/newlib/$_newlib.tar.gz")
-md5sums=('98215f83a542fdde946c11661a34ab3f')
+md5sums=('d25fd33b39147d79741faece37dd33a8')
 options=('!emptydirs' '!strip')
 
 build() {
