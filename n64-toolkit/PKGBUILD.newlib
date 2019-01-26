@@ -24,7 +24,7 @@ build() {
   export CPPFLAGS=""
   export LDFLAGS=""
 
-  export CFLAGS_FOR_TARGET="-O2 -G0 -ffunction-sections -fdata-sections \
+  export CFLAGS_FOR_TARGET="-O2 -G0 \
 -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables"
   export CXXFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET -fno-rtti"
 
