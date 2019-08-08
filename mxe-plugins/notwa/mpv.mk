@@ -3,8 +3,8 @@
 PKG             := mpv
 $(PKG)_WEBSITE  := https://mpv.io/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := d6d6da4
-$(PKG)_CHECKSUM := 296c2872d68d51d6de5b1858e9b9fa1e27893177fef84d4eab1d39e4ff6e8055
+$(PKG)_VERSION  := 639ee55
+$(PKG)_CHECKSUM := 0467d10043b8b95bfdf70afe4e90f998258219e2391f40b1c0dd0c7be1723aa4
 $(PKG)_GH_CONF  := mpv-player/mpv/branches/master
 $(PKG)_DEPS     := cc ffmpeg fribidi lcms \
                    libarchive libass libdvdnav libdvdread libiconv \
