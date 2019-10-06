@@ -1,0 +1,104 @@
+pkgbase=mingw-w64-nim
+pkgname=("${MINGW_PACKAGE_PREFIX}-nim")
+pkgdesc='Imperative, multi-paradigm, compiled programming language'
+url='https://github.com/nim-lang/Nim'
+license=('MIT')
+options=('!emptydirs')
+provides=('nim' 'nimble')
+conflicts=('nim' 'nimble')
+pkgver=1.0.0
+_csources=0.20.0
+_nimble=0.11.0
+pkgrel=1
+arch=('i686' 'x86_64')
+depends=("${MINGW_PACKAGE_PREFIX}-openssl")
+source=(nim-${pkgver}.tar.gz::https://github.com/nim-lang/Nim/archive/v${pkgver}.tar.gz
+        csources-${_csources}.tar.gz::https://github.com/nim-lang/csources/archive/v${_csources}.tar.gz
+        nimble-${_nimble}.tar.gz::https://github.com/nim-lang/nimble/archive/v${_nimble}.tar.gz
+        '0001-Use-unixy-filenames-even-on-Windows.patch'
+        '0002-Always-look-in-unix-paths.patch'
+        '0003-Check-lib-nim-subdirectory.patch'
+        '0004-Use-mingw64-dlls.patch')
+sha256sums=('6d93d25da6b5ef4e0223acb1f1abadf06be1019a8137491ddc7c6fa030e638c3'
+            '5e6fd15d90df1a8cb7614c4ffc70aa8c4198cd854d7742016202b96dd0228d3c'
+            'a31d06128f3d1014d68297aa5cd264023d202cae74746d78ba84e335af3399d2'
+            '3010acbe7769ea214dd51f5889e3a26b44925001905deb04b060beaede2578f4'
+            '1861121215c183de721cfed2ebbbcc9323a40a7cacb2389d89cc21339b5bf026'
+            '5011e96e3dd7e695ad8996b54e75612a892ed1d54d50506e733196a62bbaf10f'
+            'b15c1ed3e8cb31d3b8eda925684abbc8a0e6883ea3e911f57cc8dd6003d12ce2')
+
+prepare() {
+  cd "${srcdir}/nim-${pkgver}"
+
+  rm -rf csources nimble
+  mv ../csources-${_csources} csources
+  mv ../nimble-${_nimble} nimble
+  rm bin/empty.txt
+
+  for nimcfg in {compiler,config}/nim.cfg; do
+    echo "gcc.options.always %= \"\${gcc.options.always} ${CFLAGS:-} ${CPPFLAGS}\"" >> "${nimcfg}"
+    echo "gcc.options.linker %= \"\${gcc.options.linker} ${LDFLAGS:-}\"" >> "${nimcfg}"
+  done
+
+  patch -p1 -i "${srcdir}/0001-Use-unixy-filenames-even-on-Windows.patch"
+  patch -p1 -i "${srcdir}/0002-Always-look-in-unix-paths.patch"
+  patch -p1 -i "${srcdir}/0003-Check-lib-nim-subdirectory.patch"
+  patch -p1 -i "${srcdir}/0004-Use-nimOldDlls.patch"
+}
+
+build() {
+  cd "${srcdir}/nim-${pkgver}"
+
+  msg2 "Building nim"
+  (cd csources; sh build.sh)
+
+  msg2 "Building koch"
+  ./bin/nim c -d:release koch
+  ./koch boot -d:release -d:nativeStacktrace -d:useGnuReadline
+
+  msg2 "Building libs"
+  (cd lib; ../bin/nim c --app:lib -d:createNimRtl -d:release nimrtl.nim)
+  msg2 "Building tools"
+  (cd tools; ../bin/nim c -d:release nimgrep.nim)
+  msg2 "Building nimsuggest"
+  ./bin/nim c -d:release nimsuggest/nimsuggest.nim
+
+  msg2 "Building Nimble"
+  (cd nimble; ../bin/nim c -d:release src/nimble)
+}
+
+package() {
+  cd "${srcdir}/nim-${pkgver}"
+  export PATH="${srcdir}/nim-${pkgver}/bin:${PATH}"
+
+  ./koch install "${pkgdir}"
+
+  install -Dm 755 bin/nim -t "$pkgdir$MINGW_PREFIX/bin"
+  install -Dm 755 nimble/src/nimble -t "$pkgdir$MINGW_PREFIX/bin"
+
+  install -d "${pkgdir}${MINGW_PREFIX}/lib"
+  cp -a lib "${pkgdir}${MINGW_PREFIX}/lib/nim"
+  cp -a compiler "${pkgdir}${MINGW_PREFIX}/lib/nim"
+  install -Dm 644 compiler.nimble "${pkgdir}${MINGW_PREFIX}/lib/nim/compiler"
+  install -m 755 lib/libnimrtl.dll "${pkgdir}${MINGW_PREFIX}/lib/libnimrtl.dll"
+
+  # Fix FS#48118, related to the doc2 command
+# ln -s ${MINGW_PREFIX}/share/nim/doc "${pkgdir}${MINGW_PREFIX}/lib/nim/doc"
+
+  install -Dm 644 config/* -t "${pkgdir}${MINGW_PREFIX}/etc/nim"
+  install -Dm 755 bin/* tools/nimgrep nimsuggest/nimsuggest -t "${pkgdir}${MINGW_PREFIX}/bin"
+
+  # Fix FS#50252, unusual placement of header files
+  install -d "${pkgdir}${MINGW_PREFIX}/include"
+  cp -a "${pkgdir}${MINGW_PREFIX}/lib/nim/"*.h "${pkgdir}${MINGW_PREFIX}/include"
+
+  install -d "${pkgdir}${MINGW_PREFIX}/share/nim/doc"
+  cp -a examples doc/* "${pkgdir}${MINGW_PREFIX}/share/nim/doc"
+
+  install -Dm 644 copying.txt -t "${pkgdir}${MINGW_PREFIX}/share/licenses/${pkgname}"
+  rm -r "${pkgdir}/nim"
+
+  # Nimble looks for nimscriptapi.nim in /usr/bin/nimblepkg/, of all places.
+  cp -r nimble/src/nimblepkg "${pkgdir}${MINGW_PREFIX}/share/nimble"
+  cp -r "${pkgdir}${MINGW_PREFIX}/share/nimble" "${pkgdir}${MINGW_PREFIX}/bin/nimblepkg"
+}

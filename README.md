@@ -3,10 +3,11 @@ some of them are for Arch Linux, some of them are for MSYS2,
 some of them work with both.
 heads up: these are likely to be out of date.
 
-### mingw-w64-nim-git
+### mingw-w64-nim
 
-patches nim to compile with MSYS2, and use MSYS2 paths/DLLs.
-a few things aren't working yet, but the core functionality is there.
+patches nim 1.0.0 to compile with MSYS2, and use MSYS2 paths/DLLs.
+a few things might not work, but the core functionality
+(including nimble) is working.
 
 ### mingw-w64-tbox
 

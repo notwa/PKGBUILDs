@@ -1,0 +1,11 @@
+--- a/compiler/nimconf.nim
++++ b/compiler/nimconf.nim
+@@ -227,7 +227,7 @@
+   # the UNIX way)
+   let p = getPrefixDir(conf)
+   result = p / RelativeDir"config" / filename
+-  when defined(unix):
++  when true:
+     if not fileExists(result): result = p / RelativeDir"etc/nim" / filename
+     if not fileExists(result): result = AbsoluteDir"/etc/nim" / filename
+ 

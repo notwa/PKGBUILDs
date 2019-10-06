@@ -1,0 +1,13 @@
+--- a/compiler/options.nim
++++ b/compiler/options.nim
+@@ -507,6 +507,10 @@
+     else:
+       conf.libpath = prefix / RelativeDir"lib"
+ 
++    if not fileExists(conf.libpath.string / "system.nim") and
++        fileExists(conf.libpath.string / "nim" / "system.nim"):
++      conf.libpath = conf.libpath / RelativeDir"nim"
++
+     # Special rule to support other tools (nimble) which import the compiler
+     # modules and make use of them.
+     let realNimPath = findExe("nim")
