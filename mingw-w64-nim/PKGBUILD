@@ -43,7 +43,7 @@ prepare() {
   patch -p1 -i "${srcdir}/0001-Use-unixy-filenames-even-on-Windows.patch"
   patch -p1 -i "${srcdir}/0002-Always-look-in-unix-paths.patch"
   patch -p1 -i "${srcdir}/0003-Check-lib-nim-subdirectory.patch"
-  patch -p1 -i "${srcdir}/0004-Use-nimOldDlls.patch"
+  patch -p1 -i "${srcdir}/0004-Use-mingw64-dlls.patch"
 }
 
 build() {
