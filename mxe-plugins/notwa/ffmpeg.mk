@@ -3,8 +3,8 @@
 PKG             := ffmpeg
 $(PKG)_WEBSITE  := https://ffmpeg.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 5a0575e
-$(PKG)_CHECKSUM := 777767af6e3e36abc248cdedd15d841ad6aa239219eb8a1ad033afb7aea21455
+$(PKG)_VERSION  := 42b2856
+$(PKG)_CHECKSUM := d0f0a6e0829d24562c70ad7ed89caff51d382f7cfc5fad587a040dadc007b52d
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://git.ffmpeg.org/gitweb/ffmpeg.git/snapshot/$($(PKG)_FILE)
@@ -42,7 +42,6 @@ define $(PKG)_BUILD
         --enable-nonfree \
         \
         --extra-libs='-mconsole' \
-        --enable-avisynth \
         --enable-gnutls \
         --enable-libass \
         --enable-libbluray \
