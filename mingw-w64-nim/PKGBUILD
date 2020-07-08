@@ -6,7 +6,7 @@ license=('MIT')
 options=('!emptydirs')
 provides=('nim' 'nimble')
 conflicts=('nim' 'nimble')
-pkgver=1.2.0
+pkgver=1.2.4
 _csources=0.20.0
 _nimble=0.11.2
 pkgrel=2
@@ -19,7 +19,7 @@ source=(nim-${pkgver}.tar.gz::https://github.com/nim-lang/Nim/archive/v${pkgver}
         '0002-Always-look-in-unix-paths.patch'
         '0003-Check-lib-nim-subdirectory.patch'
         '0004-Use-mingw64-dlls.patch')
-sha256sums=('0920fe06b724de03ace28ec63db2e71734c1ab77499cafe08289bce25be8d8a4'
+sha256sums=('1449469c1d29b990de110b32370170509fd16fe171744acd06d62b9a2e0ca84f'
             '5e6fd15d90df1a8cb7614c4ffc70aa8c4198cd854d7742016202b96dd0228d3c'
             'eaa99c7f8ba974ba1a93574c6636c92ff1cb26425d9277baedf2c6660261fd1a'
             '3010acbe7769ea214dd51f5889e3a26b44925001905deb04b060beaede2578f4'
