@@ -8,8 +8,8 @@ provides=('nim' 'nimble')
 conflicts=('nim' 'nimble')
 pkgver=1.2.4
 _csources=0.20.0
-_nimble=0.11.2
-pkgrel=2
+_nimble=0.11.4
+pkgrel=3
 arch=('i686' 'x86_64')
 depends=("${MINGW_PACKAGE_PREFIX}-openssl")
 source=(nim-${pkgver}.tar.gz::https://github.com/nim-lang/Nim/archive/v${pkgver}.tar.gz
@@ -21,7 +21,7 @@ source=(nim-${pkgver}.tar.gz::https://github.com/nim-lang/Nim/archive/v${pkgver}
         '0004-Use-mingw64-dlls.patch')
 sha256sums=('1449469c1d29b990de110b32370170509fd16fe171744acd06d62b9a2e0ca84f'
             '5e6fd15d90df1a8cb7614c4ffc70aa8c4198cd854d7742016202b96dd0228d3c'
-            'eaa99c7f8ba974ba1a93574c6636c92ff1cb26425d9277baedf2c6660261fd1a'
+            '63e0dbfa5c33f80d6f8f8156a609e11497ac5390b64dc8d68f5126c3bb8d5429'
             '3010acbe7769ea214dd51f5889e3a26b44925001905deb04b060beaede2578f4'
             '1861121215c183de721cfed2ebbbcc9323a40a7cacb2389d89cc21339b5bf026'
             '5011e96e3dd7e695ad8996b54e75612a892ed1d54d50506e733196a62bbaf10f'
