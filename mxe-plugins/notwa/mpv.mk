@@ -24,6 +24,5 @@ define $(PKG)_BUILD
         --enable-libbluray \
         --enable-lua \
         --enable-rubberband \
-        --enable-sdl2 \
-        --enable-static-build
+        --enable-sdl2
 endef
