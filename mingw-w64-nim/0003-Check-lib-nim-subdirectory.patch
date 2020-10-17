@@ -1,6 +1,6 @@
 --- a/compiler/options.nim
 +++ b/compiler/options.nim
-@@ -507,6 +507,10 @@
+@@ -619,6 +619,10 @@
      else:
        conf.libpath = prefix / RelativeDir"lib"
  
