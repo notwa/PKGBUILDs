@@ -11,7 +11,7 @@ $(PKG)_DEPS     := cc ffmpeg fribidi lcms \
                    jpeg libpng luajit rubberband pthreads sdl2 $(BUILD)~waf
 
 define $(PKG)_BUILD
-    cd '$(1)' && DEST_OS=win32 TARGET=$(TARGET) '$(PREFIX)/$(BUILD)/bin/waf' \
+    cd '$(1)' && DEST_OS=win32 TARGET=$(TARGET) python3 '$(PREFIX)/$(BUILD)/bin/waf' \
         configure build install -j '$(JOBS)' \
         --prefix='$(PREFIX)/$(TARGET)' \
         $(if $(BUILD_STATIC), \
