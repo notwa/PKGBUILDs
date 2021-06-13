@@ -6,9 +6,9 @@ license=('MIT')
 options=('!emptydirs')
 provides=('nim' 'nimble')
 conflicts=('nim' 'nimble')
-pkgver=1.4.0
+pkgver=1.4.8
 _csources=0.20.0
-_nimble=0.12.0
+_nimble=0.13.1
 pkgrel=1
 arch=('i686' 'x86_64')
 depends=("${MINGW_PACKAGE_PREFIX}-openssl")
@@ -19,13 +19,13 @@ source=(nim-${pkgver}.tar.gz::https://github.com/nim-lang/Nim/archive/v${pkgver}
         '0002-Always-look-in-unix-paths.patch'
         '0003-Check-lib-nim-subdirectory.patch'
         '0004-Use-mingw64-dlls.patch')
-sha256sums=('3918ff1834888cd3feec5002931d4052a354994a0355bf1ae950f2f17ba81417'
+sha256sums=('8a687beb30670dc4eadcfefd1198d4238af283dc716438ac2342a7d65e07d9e9'
             '5e6fd15d90df1a8cb7614c4ffc70aa8c4198cd854d7742016202b96dd0228d3c'
-            '0b88d91a450f31641f85379f2d76afb0a013cf783e62144a6534525b9cb1cbac'
+            'e6aa8d9ee4b3ed0321dca329b4a38fa546771b9729984482fb50fe73d3777f5d'
             '3010acbe7769ea214dd51f5889e3a26b44925001905deb04b060beaede2578f4'
-            '1861121215c183de721cfed2ebbbcc9323a40a7cacb2389d89cc21339b5bf026'
-            '166b9c18dd22cf34112df70cd37ebc388b73715e80e1a1e2acff8f0da72f171b'
-            'b15c1ed3e8cb31d3b8eda925684abbc8a0e6883ea3e911f57cc8dd6003d12ce2')
+            '047036575b23b607f992981da7d53f027ed05d533b7b02fecc42782466e410e4'
+            '1b3c72c6cae8af9e297bbd345ab655e51eec7012f0d0dcf873904cc6f28e77d4'
+            '169ff8e04af1fb10ab06604b517ba8f4e98f4341d29fbbb10af3d3e360085dfc')
 
 prepare() {
   cd "${srcdir}/nim-${pkgver}"

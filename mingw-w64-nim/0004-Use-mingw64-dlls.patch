@@ -1,17 +1,6 @@
---- a/lib/wrappers/openssl.nim
-+++ b/lib/wrappers/openssl.nim
-@@ -53,7 +53,7 @@
-     from posix import SocketHandle
- 
- elif useWinVersion:
--  when not defined(nimOldDlls) and defined(cpu64):
-+  when defined(cpu64):
-     const
-       DLLSSLName* = "(libssl-1_1-x64|ssleay64|libssl64).dll"
-       DLLUtilName* = "(libcrypto-1_1-x64|libeay64).dll"
 --- a/lib/wrappers/pcre.nim
 +++ b/lib/wrappers/pcre.nim
-@@ -314,12 +314,7 @@
+@@ -312,12 +312,7 @@
  
  when not defined(usePcreHeader):
    when hostOS == "windows":
@@ -27,7 +16,7 @@
    else:
 --- a/lib/wrappers/sqlite3.nim
 +++ b/lib/wrappers/sqlite3.nim
-@@ -13,12 +13,7 @@
+@@ -11,12 +11,7 @@
    {.push styleChecks: off.}
  
  when defined(windows):

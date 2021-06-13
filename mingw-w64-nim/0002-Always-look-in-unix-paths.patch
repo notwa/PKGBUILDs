@@ -1,6 +1,6 @@
 --- a/compiler/nimconf.nim
 +++ b/compiler/nimconf.nim
-@@ -227,7 +227,7 @@
+@@ -234,7 +234,7 @@
    # the UNIX way)
    let p = getPrefixDir(conf)
    result = p / RelativeDir"config" / filename
