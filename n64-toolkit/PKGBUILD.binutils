@@ -5,7 +5,7 @@ _sysroot="$_prefix/sysroot"
 
 pkgname="$_triplet-binutils"
 pkgver=2.37
-pkgrel=1
+pkgrel=2
 _binutils="binutils-$pkgver"
 pkgdesc="A set of programs to assemble and manipulate binary and object files ($_triplet)"
 arch=('any')
@@ -74,5 +74,7 @@ package() {
   make DESTDIR="$pkgdir" install -j1
 
   # strip host binaries
-  find "$PREFIX/bin" -type f -and \( -executable \) -exec strip '{}' \;
+  find "$PREFIX" -type f -and \( -executable \) -exec strip '{}' \;
+
+  rm -r "$PREFIX/share"
 }

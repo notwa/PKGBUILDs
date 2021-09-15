@@ -5,7 +5,7 @@ _sysroot="$_prefix/sysroot"
 
 pkgname="$_triplet-bootstrap"
 pkgver=11.2.0
-pkgrel=1
+pkgrel=2
 _gcc="gcc-$pkgver"
 _mpfr=mpfr-4.1.0
 _gmp=gmp-6.2.1
@@ -52,8 +52,8 @@ build() {
   export CPPFLAGS=""
   export LDFLAGS=""
 
-  export CFLAGS_FOR_TARGET="-fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables"
-  export CXXFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET -fno-rtti"
+  export CFLAGS_FOR_TARGET="-Os -G0 -fcommon -ffunction-sections -fdata-sections"
+  export CXXFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET"
 
   cd "$srcdir"
   [ -d "build-bootstrap-gcc" ] || mkdir "build-bootstrap-gcc"
@@ -92,12 +92,14 @@ build() {
     --disable-threads \
     --disable-tls \
     --disable-werror \
+    --disable-win32-registry \
     --enable-languages=c,c++,lto \
     --enable-lto \
     --enable-static \
     --enable-target-optspace \
     --with-abi=32 \
     --with-arch=vr4300 \
+    --with-gcc \
     --with-gnu-as \
     --with-gnu-ld \
     --with-newlib \
@@ -114,14 +116,10 @@ package() {
   cd "$srcdir/build-bootstrap-gcc"
   make DESTDIR="$pkgdir" install-gcc -j1
 
-  # strip target binaries
-  find "$PREFIX/lib" \( -name "*.a" -or -name "*.o" \) -exec $_target-objcopy \
-    -R .comment -R .note -R .debug_info -R .debug_aranges -R .debug_pubnames -R .debug_pubtypes -R .debug_abbrev -R .debug_line -R .debug_str -R .debug_ranges -R .debug_loc \
-    '{}' \;
-
   # strip host binaries
-  find "$PREFIX/bin" "$PREFIX/lib/gcc/$_target/${_gcc/gcc-/}" \
-    -type f -and \( -executable \) -exec strip '{}' \;
+  # "$PREFIX/bin"
+  # "$PREFIX/lib/gcc/$_target/$pkgver"
+  find "$PREFIX" -type f -and \( -executable \) -exec strip '{}' \;
 
-  rm -r "$PREFIX/share/info"
+  rm -r "$PREFIX/share"
 }
