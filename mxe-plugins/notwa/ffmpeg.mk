@@ -3,16 +3,15 @@
 PKG             := ffmpeg
 $(PKG)_WEBSITE  := https://ffmpeg.org/
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 0c8a0d3
-$(PKG)_CHECKSUM := 60dd8ccab0ccb0121eb1c70f931907a4b309abb802e5ea4741d697a62011cc75
+$(PKG)_VERSION  := 3e127b5
+$(PKG)_CHECKSUM := be2f174680648bed2c5e7305c39143f25e457a30fe04b168d3973baff789e4c0
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := https://git.ffmpeg.org/gitweb/ffmpeg.git/snapshot/$($(PKG)_FILE)
-$(PKG)_DEPS     := bzip2 cc fdk-aac fontconfig freetype \
-                   fribidi gnutls ladspa lame \
-                   libass libbluray libbs2b libcaca librtmp libvpx libwebp \
-                   opencore-amr opus sdl speex theora vidstab \
-                   vo-amrwbenc vorbis x264 xvidcore yasm zlib
+$(PKG)_DEPS     := bzip2 cc fdk-aac fontconfig freetype fribidi gnutls \
+                   ladspa lame libass libbluray libbs2b libcaca \
+                   librtmp libvpx libwebp opencore-amr opus sdl speex theora \
+                   vidstab vo-amrwbenc vorbis x264 xvidcore yasm zlib
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://git.ffmpeg.org/gitweb/ffmpeg.git/shortlog' | \
@@ -21,7 +20,7 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && ./configure \
+    cd '$(BUILD_DIR)' && '$(SOURCE_DIR)/configure' \
         --cross-prefix='$(TARGET)'- \
         --enable-cross-compile \
         --arch=$(firstword $(subst -, ,$(TARGET))) \
@@ -30,13 +29,12 @@ define $(PKG)_BUILD
         $(if $(BUILD_STATIC), \
             --enable-static --disable-shared , \
             --disable-static --enable-shared ) \
-        --yasmexe='$(TARGET)-yasm' \
+        --x86asmexe='$(TARGET)-yasm' \
         --disable-debug \
         --disable-pthreads \
         --enable-w32threads \
         --disable-ffplay --disable-ffprobe \
         --disable-doc \
-        --enable-avresample \
         --enable-gpl \
         --enable-version3 \
         --enable-nonfree \
@@ -67,7 +65,8 @@ define $(PKG)_BUILD
         --enable-libass \
         --enable-libfreetype --enable-libfontconfig --enable-libfribidi \
         --enable-libvidstab \
-        --enable-bzlib --enable-zlib
-    $(MAKE) -C '$(1)' -j '$(JOBS)'
-    $(MAKE) -C '$(1)' -j 1 install
+        --enable-bzlib --enable-zlib \
+        $($(PKG)_CONFIGURE_OPTS)
+    $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)'
+    $(MAKE) -C '$(BUILD_DIR)' -j 1 install
 endef
