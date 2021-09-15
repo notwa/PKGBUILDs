@@ -19,7 +19,7 @@ patches tbox to compile/run with MSYS2.
 builds a cross-compiler for N64 homebrew.
 works on both Arch and MSYS2.
 
-installs to `/opt/mips64-elf-ultra64`, so add that to your PATH as needed.
+installs to `/opt/mips-ultra64-elf`, so add that to your PATH as needed.
 
 ### xml2
 

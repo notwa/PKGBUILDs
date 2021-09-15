@@ -1,17 +1,19 @@
-_target=mips64
-_tuple=$_target-elf-ultra64
-_prefix=/opt/$_tuple
-pkgname=$_tuple-newlib
-pkgver=3.1.0.20181231
+_target=mips
+_triplet="$_target-ultra64-elf"
+_prefix="/opt/$_triplet"
+_sysroot="$_prefix/sysroot"
+
+pkgname="$_triplet-newlib"
+pkgver=4.1.0
 pkgrel=1
 _newlib="newlib-$pkgver"
-pkgdesc="A C library intended for use on embedded systems ($_target)"
+pkgdesc="A C library intended for use on embedded systems ($_triplet)"
 arch=('any')
 license=('BSD')
 url='http://sourceware.org/newlib/'
-makedepends=("$_tuple-bootstrap")
+makedepends=("$_triplet-bootstrap")
 source=("ftp://sourceware.org/pub/newlib/$_newlib.tar.gz")
-md5sums=('d25fd33b39147d79741faece37dd33a8')
+sha256sums=('f296e372f51324224d387cc116dc37a6bd397198756746f93a2b02e9a5d40154')
 options=('!emptydirs' '!strip')
 
 build() {
@@ -24,8 +26,7 @@ build() {
   export CPPFLAGS=""
   export LDFLAGS=""
 
-  export CFLAGS_FOR_TARGET="-O2 -G0 \
--fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables"
+  export CFLAGS_FOR_TARGET="-fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables"
   export CXXFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET -fno-rtti"
 
   cd "$srcdir"
@@ -37,20 +38,25 @@ build() {
     _build="--build=$MINGW_CHOST --host=$MINGW_CHOST"
   fi
 
-  "../$_newlib/configure" $_build --target=$_target --prefix="$_prefix" \
-    --with-newlib \
-    --enable-lto \
-    --enable-target-optspace \
-    --enable-lite-exit \
-    --enable-newlib-global-atexit \
-    --enable-newlib-nano-malloc \
-    --disable-shared \
-    --disable-threads \
+  "../$_newlib/configure" $_build \
+    --target=$_target \
+    --prefix="$_prefix" \
+    \
+    --disable-libssp \
     --disable-newlib-atexit-dynamic-alloc \
     --disable-newlib-fvwrite-in-streamio \
-    --disable-newlib-wide-orient \
-    --disable-newlib-unbuf-stream-opt \
     --disable-newlib-supplied-syscalls \
+    --disable-newlib-unbuf-stream-opt \
+    --disable-newlib-wide-orient \
+    --disable-nls \
+    --disable-shared \
+    --disable-threads \
+    --enable-lite-exit \
+    --enable-lto \
+    --enable-newlib-global-atexit \
+    --enable-newlib-nano-malloc \
+    --enable-target-optspace \
+    --with-newlib \
 
   #--enable-newlib-nano-formatted-io
   make

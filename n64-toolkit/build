@@ -13,10 +13,12 @@ maybe_sudo() {
 
 set -e
 maybe_sudo -u "$USER" makepkg -fp PKGBUILD.binutils
-maybe_sudo pacman -U *.xz(om[1])
+maybe_sudo pacman -U --noconfirm *.zst(om[1])
 maybe_sudo -u "$USER" makepkg -fp PKGBUILD.bootstrap
-maybe_sudo pacman -U *.xz(om[1])
+maybe_sudo pacman -U --noconfirm *.zst(om[1])
+# due to issues with a symlink, we must attempt to extract newlib twice.
+maybe_sudo -u "$USER" makepkg -op PKGBUILD.newlib || true
 maybe_sudo -u "$USER" makepkg -fp PKGBUILD.newlib
-maybe_sudo pacman -U *.xz(om[1])
+maybe_sudo pacman -U --noconfirm *.zst(om[1])
 maybe_sudo -u "$USER" makepkg -efp PKGBUILD.gcc
-maybe_sudo pacman -U *.xz(om[1])
+maybe_sudo pacman -U --noconfirm *.zst(om[1])

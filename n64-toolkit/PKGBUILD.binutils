@@ -1,23 +1,27 @@
-_target=mips64
-_tuple=$_target-elf-ultra64
-_prefix=/opt/$_tuple
-pkgname=$_tuple-binutils
-pkgver=2.31.1
+_target=mips
+_triplet="$_target-ultra64-elf"
+_prefix="/opt/$_triplet"
+_sysroot="$_prefix/sysroot"
+
+pkgname="$_triplet-binutils"
+pkgver=2.37
 pkgrel=1
 _binutils="binutils-$pkgver"
-pkgdesc="A set of programs to assemble and manipulate binary and object files ($_target)"
+pkgdesc="A set of programs to assemble and manipulate binary and object files ($_triplet)"
 arch=('any')
 license=('GPL')
 url='http://www.gnu.org/software/binutils/'
 depends=('zlib')
 source=("ftp://gcc.gnu.org/pub/binutils/releases/$_binutils.tar.bz2")
-md5sums=('84edf97113788f106d6ee027f10b046a')
+sha256sums=('67fc1a4030d08ee877a4867d3dcab35828148f87e1fd05da6db585ed5a166bd4')
 options=('!emptydirs' '!strip')
 
 prepare() {
   cd "$srcdir/$_binutils"
   # Hack - see native package for details
   sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" libiberty/configure
+  # annoying oversight:
+  sed -i 's/\<uint\>/unsigned int/g' libiberty/rust-demangle.c
 }
 
 build() {
@@ -28,8 +32,7 @@ build() {
   export CPPFLAGS=""
   export LDFLAGS=""
 
-  export CFLAGS_FOR_TARGET="-O2 -G0 \
--fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables"
+  export CFLAGS_FOR_TARGET="-fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables"
   export CXXFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET -fno-rtti"
 
   cd "$srcdir"
@@ -41,13 +44,25 @@ build() {
     _build="--build=$MINGW_CHOST --host=$MINGW_CHOST"
   fi
 
-  "../$_binutils/configure" $_build --target=$_target --prefix="$_prefix" \
-    --enable-static \
+  "../$_binutils/configure" $_build \
+    --target=$_target \
+    --prefix="$_prefix" \
+    \
     --disable-gold \
+    --disable-libquadmath \
+    --disable-libquadmath-support \
     --disable-multilib \
     --disable-nls \
     --disable-shared \
     --disable-werror \
+    --enable-deterministic-archives \
+    --enable-lto \
+    --enable-static \
+    --with-gcc \
+    --with-gnu-as \
+    --with-gnu-ld \
+    --with-sysroot="$_sysroot" \
+    --without-included-gettext \
 
   make all
 }
