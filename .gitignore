@@ -1,7 +1,8 @@
-*/src
-*/pkg
-*/*.tar
-*/*.gz
-*/*.bz2
-*/*.xz
-*/*.zst
+*.bak
+*.bz2
+*.gz
+*.tar
+*.xz
+*.zst
+pkg
+src
