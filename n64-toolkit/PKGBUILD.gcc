@@ -5,32 +5,33 @@ _sysroot="$_prefix/sysroot"
 
 pkgname="$_triplet-gcc"
 pkgver=11.2.0
-pkgrel=2
+pkgrel=3
 _gcc="gcc-$pkgver"
 _mpfr=mpfr-4.1.0
 _gmp=gmp-6.2.1
 _mpc=mpc-1.2.1
-_isl=isl-0.18
+_isl=isl-0.24
 pkgdesc="The GNU Compiler Collection ($_triplet)"
 arch=('any')
 license=('GPL' 'LGPL' 'FDL')
 url='http://www.gnu.org/software/gcc/'
 depends=('zlib' "$_triplet-binutils" "$_triplet-newlib")
 makedepends=('gmp' 'mpfr')
-conflicts=("$_triplet-bootstrap")
-provides=("$_triplet-bootstrap")
-replaces=("$_triplet-bootstrap")
-source=("ftp://gcc.gnu.org/pub/gcc/releases/$_gcc/$_gcc.tar.gz"
+source=("ftp://gcc.gnu.org/pub/gcc/releases/$_gcc/$_gcc.tar.xz"
         "ftp://ftp.gnu.org/gnu/mpfr/$_mpfr.tar.bz2"
         "ftp://ftp.gnu.org/gnu/gmp/$_gmp.tar.bz2"
         "ftp://ftp.gnu.org/gnu/mpc/$_mpc.tar.gz"
-        "ftp://gcc.gnu.org/pub/gcc/infrastructure/$_isl.tar.bz2")
-sha256sums=('f0837f1bf8244a5cc23bd96ff6366712a791cfae01df8e25b137698aca26efc1'
+        "http://isl.gforge.inria.fr/$_isl.tar.bz2")
+sha256sums=('d08edc536b54c372a1010ff6619dd274c0f1603aa49212ba20f7aa2cda36fa8b'
             'feced2d430dd5a97805fa289fed3fc8ff2b094c02d05287fd6133e7f1f0ec926'
             'eae9326beb4158c386e39a356818031bd28f3124cf915f8c5b1dc4c7a36b4d7c'
             '17503d2c395dfcf106b622dc142683c1199431d095367c6aacba6eec30340459'
-            '6b8b0fd7f81d0a957beb3679c81bbb34ccc7568d5682844d8924424a0dadcb1b')
+            'fcf78dd9656c10eb8cf9fbd5f59a0b6b01386205fe1934b3b287a0a1898145c0')
+
 options=('!emptydirs' '!strip')
+conflicts=("$_triplet-bootstrap")
+provides=("$_triplet-bootstrap")
+replaces=("$_triplet-bootstrap")
 
 prepare() {
   cd "$srcdir/$_isl"

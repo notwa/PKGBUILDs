@@ -5,7 +5,7 @@ _sysroot="$_prefix/sysroot"
 
 pkgname="$_triplet-newlib"
 pkgver=4.1.0
-pkgrel=2
+pkgrel=3
 _newlib="newlib-$pkgver"
 pkgdesc="A C library intended for use on embedded systems ($_triplet)"
 arch=('any')
