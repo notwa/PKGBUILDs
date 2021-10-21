@@ -9,6 +9,12 @@ patches nim 1.0.0 to compile with MSYS2, and use MSYS2 paths/DLLs.
 a few things might not work, but the core functionality
 (including nimble) is working.
 
+**NOTE:** you'll want a `cacert.pem` somewhere in your PATH.
+for example, (don't actually use this path):
+```
+curl -LsS https://curl.se/ca/cacert.pem -o /c/Windows/cacert.pem
+```
+
 ### mingw-w64-tbox
 
 patches tbox to compile/run with MSYS2.
