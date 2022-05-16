@@ -5,7 +5,7 @@ heads up: these are likely to be out of date.
 
 ### mingw-w64-nim
 
-patches nim 1.0.0 to compile with MSYS2, and use MSYS2 paths/DLLs.
+patches nim 1.6.6 to compile with MSYS2, and use MSYS2 paths/DLLs.
 a few things might not work, but the core functionality
 (including nimble) is working.
 
