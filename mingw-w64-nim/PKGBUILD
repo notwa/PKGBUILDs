@@ -6,7 +6,7 @@ license=('MIT')
 options=('!emptydirs')
 provides=('nim' 'nimble')
 conflicts=('nim' 'nimble')
-pkgver=1.6.4
+pkgver=1.6.6
 _csources=561b417c65791cd8356b5f73620914ceff845d10
 _nimble=0.13.1
 pkgrel=1
@@ -19,7 +19,7 @@ source=(nim-${pkgver}.tar.gz::https://github.com/nim-lang/Nim/archive/v${pkgver}
         '0002-Always-look-in-unix-paths.patch'
         '0003-Check-lib-nim-subdirectory.patch'
         '0004-Use-mingw64-dlls.patch')
-sha256sums=('46beadcf4d606d0bbbf4bf93e5fa8a9d18baa1a7171eb2586a894099fd925b12'
+sha256sums=('59836a85c1291b59af699a121b0b765703d6a0e44ed9f3ede363ff2b3e09d527'
             '71c823444c794a12da9027d19d6a717dd7759521ecbbe28190b08372142607ec'
             'e6aa8d9ee4b3ed0321dca329b4a38fa546771b9729984482fb50fe73d3777f5d'
             '3010acbe7769ea214dd51f5889e3a26b44925001905deb04b060beaede2578f4'
@@ -50,21 +50,21 @@ build() {
   cd "${srcdir}/nim-${pkgver}"
 
   msg2 "Building nim"
-  (cd csources; sh build.sh)
+  (cd csources && sh build.sh)
 
   msg2 "Building koch"
   ./bin/nim c -d:release koch
   ./koch boot -d:release -d:nativeStacktrace -d:useGnuReadline
 
   msg2 "Building libs"
-  (cd lib; ../bin/nim c --app:lib -d:createNimRtl -d:release nimrtl.nim)
+  (cd lib && ../bin/nim c --app:lib -d:createNimRtl -d:release nimrtl.nim)
   msg2 "Building tools"
-  (cd tools; ../bin/nim c -d:release nimgrep.nim)
+  (cd tools && ../bin/nim c -d:release nimgrep.nim)
   msg2 "Building nimsuggest"
   ./bin/nim c -d:release nimsuggest/nimsuggest.nim
 
   msg2 "Building Nimble"
-  (cd nimble; ../bin/nim c -d:release src/nimble)
+  (cd nimble && ../bin/nim c -d:release src/nimble)
 }
 
 package() {
